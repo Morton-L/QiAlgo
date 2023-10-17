@@ -21,21 +21,27 @@ QiAlgo_OCR 擅长序列到序列（Sequence-to-Sequence）任务，或者说场�
 
 ## 当前支持的验证码类型
 
-| 库       | 样例            |
-|---------|---------------|
-| Captcha | ![](A5Sk.png) |
+| 库       | 样例                   |
+|---------|----------------------|
+| Captcha | ![](images/A5Sk.png) |
 
 
 ## 使用
 
 ### 安装
 
+#### 在线安装
+
+```shell
+pip install QiAlgo-OCR
+```
+
 #### 通过 whl 进行安装
 
 1. 在 [Releases页面](https://github.com/Morton-L/QiAlgo_OCR/releases) 下载 whl 包
 2. 安装 whl 包```pip install QiAlgo_OCR-1.0.0-py3-none-any.whl```
 
-### 示例
+### 使用示例
 
 ```python
 from QiAlgo_OCR import QiAlgo_OCR
@@ -62,7 +68,7 @@ if __name__ == '__main__':
 
 除了使用字节串 (bytestring)外，QiAlgo_OCR 还可以识别Base64、路径、PIL（Pillow）库中的Image图像对象、PurePath路径
 
-### 基于源码打包
+## 基于源码打包
 
 1. 将 onnx 模型命名为 `model.onnx` 并放置在 `QiAlgo_OCR/model/` 目录下；
 2. ```python setup.py sdist bdist_wheel```
