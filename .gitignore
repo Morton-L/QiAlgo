@@ -6,3 +6,8 @@ venv/
 
 # 字节码缓存目录
 __pycache__/
+
+# 打包目录
+build/
+dist/
+*.egg-info/
