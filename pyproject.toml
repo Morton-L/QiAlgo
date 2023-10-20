@@ -1,6 +1,6 @@
 [project]
 name = "QiAlgo_OCR"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="Morton Li", email="Morton.L@Outlook.com" },
 ]
