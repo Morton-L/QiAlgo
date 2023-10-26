@@ -42,13 +42,13 @@ class QiAlgo_OCR:
         if charset is not None:
             self.charset = charset
         else:
-            self.charset = [' ', '5', 'N', 'R', 'J', 'n', 'E', 'v', 'Q',
-                            'g', '7', '9', 'X', '2', 'Y', 'D', 't', 'x',
-                            'r', '1', 'o', 'C', 'k', 'e', 'p', 'G', 'i',
-                            'S', 'l', 'P', 'I', '3', 'L', 'c', 'z', 'f',
-                            's', 'V', 'H', 'T', 'd', 'm', '0', 'y', '4',
-                            '6', 'w', 'b', 'q', 'W', 'O', 'a', 'F', 'B',
-                            'A', 'h', 'U', 'Z', 'K', 'M', 'j', '8', 'u']
+            self.charset = [' ', 'E', 'O', '0', '9', 'a', '8', 'B', 'h',
+                            'S', '2', 't', 'n', 'z', 'N', 'u', 'x', 'K',
+                            'g', 'W', 'm', 'i', 'e', 'C', 'f', 'r', 'I',
+                            '6', '4', 'G', 'X', 'D', 'k', 'M', '1', 's',
+                            'H', 'L', 'P', '5', 'V', 'o', 'R', 'q', 'Y',
+                            'l', 'U', 'w', '7', 'Z', 'v', 'd', 'b', 'A',
+                            'J', 'y', '3', 'c', 'p', 'F', 'j', 'Q', 'T']
 
     def init_onnx_module(self, onnx_model_path=None):
         """
