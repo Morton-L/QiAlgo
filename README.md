@@ -16,6 +16,7 @@ QiAlgo_OCR 擅长序列到序列（Sequence-to-Sequence）任务，或者说场�
 | Pillow      | 10.0.1 | Python 图像处理              |
 | torch       | 2.1.0  | PyTorch 项目，用于实现硬件类型识别等功能 |
 | torchvision | 0.16.0 | PyTorch 项目的一部分，用于图像预处理。  |
+| PyYAML      | 6.0.1  | 读取配置文件。                  |
 
 您可能需要安装不同的依赖以在不同的硬件下运行，例如在使用 GPU 进行推理时，可能需要安装对应的 GPU 版本依赖。
 
@@ -24,6 +25,7 @@ QiAlgo_OCR 擅长序列到序列（Sequence-to-Sequence）任务，或者说场�
 | 库       | 样例                   |
 |---------|----------------------|
 | Captcha | ![](images/A5Sk.png) |
+|         | ![](images/5X3D.jpg) |
 
 
 ## 使用

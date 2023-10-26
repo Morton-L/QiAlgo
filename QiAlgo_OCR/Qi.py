@@ -2,22 +2,35 @@ import base64
 import io
 import os
 import pathlib
+
 import onnxruntime
 import pkg_resources
 import torch
 import torchvision
+import yaml
 from PIL import Image, UnidentifiedImageError
 
 
 class QiAlgo_OCR:
-    def __init__(self):
+    def __init__(self, onnx_model_path: str = None, model_config_path: str = None):
         self.device = None
         self.ort_session = None
         self.charset = None
         self.image = None
+        self.config = None
 
-        self.init_device()
-        self.init_charset()
+        self.init_device()  # 初始化运算设备
+
+        if not onnx_model_path and not model_config_path:
+            model_path = pkg_resources.resource_filename('QiAlgo_OCR', 'model/model.onnx')
+            self.init_charset()  # 初始化字符集
+        else:
+            with open(model_config_path, 'r', encoding="utf-8") as f:
+                self.config = yaml.load(f, Loader=yaml.FullLoader)
+            model_path = onnx_model_path
+            self.init_charset(charset=self.config['Charset'])  # 初始化字符集
+
+        self.init_onnx_module(onnx_model_path=model_path)  # 初始化 onnx 模型
 
     class TypeError(Exception):
         pass
@@ -25,16 +38,23 @@ class QiAlgo_OCR:
     def init_device(self):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    def init_charset(self):
-        self.charset = [' ', '5', 'N', 'R', 'J', 'n', 'E', 'v', 'Q',
-                        'g', '7', '9', 'X', '2', 'Y', 'D', 't', 'x',
-                        'r', '1', 'o', 'C', 'k', 'e', 'p', 'G', 'i',
-                        'S', 'l', 'P', 'I', '3', 'L', 'c', 'z', 'f',
-                        's', 'V', 'H', 'T', 'd', 'm', '0', 'y', '4',
-                        '6', 'w', 'b', 'q', 'W', 'O', 'a', 'F', 'B',
-                        'A', 'h', 'U', 'Z', 'K', 'M', 'j', '8', 'u']
+    def init_charset(self, charset=None):
+        if charset is not None:
+            self.charset = charset
+        else:
+            self.charset = [' ', 'E', 'O', '0', '9', 'a', '8', 'B', 'h',
+                            'S', '2', 't', 'n', 'z', 'N', 'u', 'x', 'K',
+                            'g', 'W', 'm', 'i', 'e', 'C', 'f', 'r', 'I',
+                            '6', '4', 'G', 'X', 'D', 'k', 'M', '1', 's',
+                            'H', 'L', 'P', '5', 'V', 'o', 'R', 'q', 'Y',
+                            'l', 'U', 'w', '7', 'Z', 'v', 'd', 'b', 'A',
+                            'J', 'y', '3', 'c', 'p', 'F', 'j', 'Q', 'T']
 
-    def init_onnx_module(self):
+    def init_onnx_module(self, onnx_model_path=None):
+        """
+        初始化 onnx 模型
+        :return:
+        """
         if torch.cuda.is_available():
             providers = [
                 ('CUDAExecutionProvider', {
@@ -50,7 +70,7 @@ class QiAlgo_OCR:
             ]
 
         self.ort_session = onnxruntime.InferenceSession(
-            pkg_resources.resource_filename('QiAlgo_OCR', 'model/model.onnx'),
+            onnx_model_path,
             providers=providers
         )
 
@@ -65,8 +85,8 @@ class QiAlgo_OCR:
             raise TypeError("The 'image' variable must be of type bytes, base64, pathlib.PurePath, or Image.Image.")
 
         # 初始化变量
-        base_height = 64
-        color_channel = 'L'
+        base_height = 64 if not self.config else self.config['ImageHeight']
+        color_channel = 'L' if not self.config else self.config['ColorChannel']
 
         # 加载图片
         if isinstance(image, bytes):
@@ -106,9 +126,6 @@ class QiAlgo_OCR:
         使用onnx模型的预测函数
         :return: 代表是否成功的布尔值, 预测的字符串
         """
-        # 加载模型
-        self.init_onnx_module()
-
         # 构建模型输入
         onnx_module_input = {self.ort_session.get_inputs()[0].name: self.image.cpu().numpy()}
         # 获取模型预测标签索引

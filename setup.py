@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='QiAlgo_OCR',
-    version='1.0.0',
+    version='1.0.1',
     packages=find_packages(),
     package_data={
         'QiAlgo_OCR': ['model/*.onnx']
@@ -13,6 +13,7 @@ setup(
         'Pillow~=10.0.1',
         'torch==2.1.0',
         'torchvision==0.16.0',
+        'PyYAML~=6.0.1',
     ],
     author='Morton Li',
     author_email='Morton.L@Outlook.com',
